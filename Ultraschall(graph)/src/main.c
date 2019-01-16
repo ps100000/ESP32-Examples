@@ -23,8 +23,8 @@ void graph(int *data, int length, int y_step){
 }
 
 void app_main(){
-    PIN_FUNC_SELECT(GPIO_PIN_MUX_REG[13], PIN_FUNC_GPIO);   //Pin 13 als GPIO setzen
-    PIN_FUNC_SELECT(GPIO_PIN_MUX_REG[12], PIN_FUNC_GPIO);   //Pin 12 als GPIO setzen
+    PIN_FUNC_SELECT(GPIO_PIN_MUX_REG[13], PIN_FUNC_GPIO);    //Pin 13 als GPIO setzen
+    PIN_FUNC_SELECT(GPIO_PIN_MUX_REG[12], PIN_FUNC_GPIO);    //Pin 12 als GPIO setzen
     gpio_set_direction(2,GPIO_MODE_OUTPUT);                  //LED-Pin als Ausgang setzen
     gpio_set_direction(12,GPIO_MODE_INPUT);                  //Pin 12 als Eingang setzen
     gpio_set_pull_mode(12,GPIO_PULLDOWN_ONLY);               //Pin 12 pulldown anschalten
@@ -47,10 +47,10 @@ void app_main(){
             }else{
                 gpio_set_level(2,0);                         //LED aus
             }
-            data[i] = distance;
+            data[i] = distance;								 //speichere die Entfernung im Feld i
             vTaskDelay(200 / portTICK_PERIOD_MS);            //warte 0.2s
-        }  
-        graph(data,64,5);
+        }
+        graph(data,64,5);									 //gebe den Graph aus	
         vTaskDelay(5000 / portTICK_PERIOD_MS);               //warte 5s
    }
 }

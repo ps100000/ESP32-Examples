@@ -32,28 +32,27 @@ int measurement ( ){
     }
     uint32_t end = xthal_get_ccount();               //endzeit in end speichern
     int distance = (end - start) / 10000;            //umrechnung in cm
-    return distance;
+    return distance;								 //Entfernung zurückgeben
 } 
 
 void app_main(){
-    PIN_FUNC_SELECT(GPIO_PIN_MUX_REG[13], PIN_FUNC_GPIO);//Pin 13 als GPIO setzen
-    PIN_FUNC_SELECT(GPIO_PIN_MUX_REG[12], PIN_FUNC_GPIO);//Pin 12 als GPIO setzen
-    gpio_set_direction(2,GPIO_MODE_OUTPUT);              //LED-Pin als Ausgang setzen
-    gpio_set_level(2,0);                                 //LED aus
-    gpio_set_direction(12,GPIO_MODE_INPUT);              //Pin 12 als Eingang setzen
-    gpio_set_pull_mode(12,GPIO_PULLDOWN_ONLY);           //Pin 12 pulldown anschalten
-    gpio_set_direction(13,GPIO_MODE_OUTPUT);             //Pin 13 als Ausgang setzen
-    while(1!=0){                                         //Endlosschleife
-        int data [32];
+    PIN_FUNC_SELECT(GPIO_PIN_MUX_REG[13], PIN_FUNC_GPIO); 	 //Pin 13 als GPIO setzen
+    PIN_FUNC_SELECT(GPIO_PIN_MUX_REG[12], PIN_FUNC_GPIO);	 //Pin 12 als GPIO setzen
+    gpio_set_direction(2,GPIO_MODE_OUTPUT);              	 //LED-Pin als Ausgang setzen
+    gpio_set_level(2,0);                                 	 //LED aus
+    gpio_set_direction(12,GPIO_MODE_INPUT);              	 //Pin 12 als Eingang setzen
+    gpio_set_pull_mode(12,GPIO_PULLDOWN_ONLY);           	 //Pin 12 pulldown anschalten
+    gpio_set_direction(13,GPIO_MODE_OUTPUT);           	     //Pin 13 als Ausgang setzen
+    while(1!=0){                                        	 //Endlosschleife
+        int data [32];									 	 //Array für die Daten erstellen (32 Felder)
         for (int i = 0; i < 32; i = i + 1){
             gpio_set_level(2, 1);                            //LED an
             vTaskDelay(100 / portTICK_PERIOD_MS);            //warte 0.1s
-            
-            data[i] = measurement();
-            ESP_LOGI("example","distance:%d", data[i]);     //Ausgabe Weg
+            data[i] = measurement();						 //Wert messen und im Feld i abspeichern
+            ESP_LOGI("example","distance:%d", data[i]);      //Ausgabe Weg
             vTaskDelay(100 / portTICK_PERIOD_MS);            //warte 0.1s
         }
-        graph(data, 32, 5);
-        vTaskDelay(5000 / portTICK_PERIOD_MS);
+        graph(data, 32, 5);									 //zeige den Graph
+        vTaskDelay(5000 / portTICK_PERIOD_MS);				 //warte 5s
    }
 }
